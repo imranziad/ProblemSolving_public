@@ -21,7 +21,6 @@ int main()
     //WRITE("out.txt");
     std::ios_base::sync_with_stdio(0);
     int cases, caseno=0, n, i, k, cnt;
-    pii p;
 
     cin >> cases;
 
