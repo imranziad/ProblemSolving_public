@@ -8,6 +8,7 @@ using namespace std;
 #define pb push_back
 #define mp make_pair
 #define pii pair<int,int>
+#define mem(a,b) memset(a,b,sizeof(a))
 #define FOR(i,j,k) for(i=j;i<=k;i++)
 #define REV(i,j,k) for(i=j;i>=k;i--)
 #define READ(f) freopen(f,"r",stdin)
