@@ -6,6 +6,7 @@
 #include <vector>
 using namespace std;
 
+// initial value should be -1
 int p[30002];
 
 int findPar(int u)
@@ -28,8 +29,8 @@ int main()
     //freopen("out.txt","w",stdout);
     std::ios_base::sync_with_stdio(false);
     int n, m, i, k, u, v, pu, cnt;
-
-
+    
+    memset(p,-1,sizeof(p));
 
     return 0;
 }
