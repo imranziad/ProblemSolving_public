@@ -1,0 +1,66 @@
+/** 2D BIT **/
+
+int a[MAX][MAX], tree[MAX][MAX];
+
+int query(int x, int y) {
+    int t, sum = 0;
+
+    while(x) {
+        t = y;
+        while(t)
+        {
+            sum += tree[x][t];
+            t -= t & (-t);
+        }
+        x -= x & (-x);
+    }
+    return sum;
+}
+
+void update(int x, int y, int val, int n) {
+    int t;
+
+    while(x<=n) {
+        t = y;
+        while(t <= n)
+        {
+            tree[x][t] += val;
+            t += t & (-t);
+        }
+        x += x & (-x);
+    }
+}
+
+/** Quad Tree / 2D Segment Tree **/
+
+int a[MAX][MAX], tree[3*MAX*MAX];
+
+void update(int node, int b1, int e1, int b2, int e2, int x, int y, int val)
+{
+    if(b1 > b2 || e1 > e2 || x > b2 || y > e2 || x < b1 || y < e1) return ;
+
+    if(b1==b2 && e1==e2 && b1==x && e1==y)
+    {
+        tree[node] += val;
+        return ;
+    }
+
+    update(node*4-2, b1, e1, (b1+b2)/2, (e1+e2)/2, x, y, val);
+    update(node*4-1, (b1+b2)/2+1, e1, b2, (e1+e2)/2, x, y, val);
+    update(node*4, b1, (e1+e2)/2+1, (b1+b2)/2, e2, x, y, val);
+    update(node*4+1, (b1+b2)/2+1, (e1+e2)/2+1, b2, e2, x, y, val);
+
+    tree[node] = tree[node*4-2] + tree[node*4-1] + tree[node*4] + tree[node*4+1];
+}
+
+int query(int node, int b1, int e1, int b2, int e2, int x1, int y1, int x2, int y2)
+{
+    if(b1 > b2 || e1 > e2 || x1 > b2 || y1 > e2 || x2 < b1 || y2 < e1) return 0;
+    if(b1 >= x1 && b2 <= x2 && e1 >= y1 && e2 <= y2) return tree[node];
+
+    int ret = query(node*4-2, b1, e1, (b1+b2)/2, (e1+e2)/2, x1, y1, x2, y2);
+    ret += query(node*4-1, (b1+b2)/2+1, e1, b2, (e1+e2)/2, x1, y1, x2, y2);
+    ret += query(node*4, b1, (e1+e2)/2+1, (b1+b2)/2, e2, x1, y1, x2, y2);
+    ret += query(node*4+1, (b1+b2)/2+1, (e1+e2)/2+1, b2, e2, x1, y1, x2, y2);
+    return ret;
+}
