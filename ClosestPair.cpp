@@ -34,7 +34,7 @@ using namespace std;
 #define pdd pair<double,double>
 
 pdd p[MAX];
-vector < pair<double,int> > lft, rgt;
+pair<double, int> vec[MAX];
 
 double dist(pdd &a, pdd &b)
 {
@@ -51,30 +51,26 @@ double closestPair(int b, int e)
     double d, tempd;
     if(dl-dr < EPS) d = dl;
     else d = dr;
+    int sz = 0;
 
-    lft.clear();
-    rgt.clear();
     // both side
     for(int i = b; i <= mid; i++)
         if( (double)(p[mid].xx-p[i].xx) < d)
-            lft.pb( mp(p[i].yy, i) );
+            vec[sz++] = mp(p[i].yy, i);
     for(int i = mid+1; i <= e; i++)
         if( (double)(p[i].xx-p[mid].xx) < d)
-            rgt.pb( mp(p[i].yy, i) );
+            vec[sz++] = mp(p[i].yy, i);
 
-    sort(lft.begin(),lft.end());
-    sort(rgt.begin(),rgt.end());
+    sort(vec,vec+sz);
 
     int i = 0, j = 0, k = 0;
 
-    while(i < lft.size())
+    while(i < sz)
     {
-        while(j < rgt.size() && (double)(lft[i].xx-rgt[j].xx) > d)
-            j++;
-        k = j;
-        while(k < rgt.size() && (double)(rgt[k].xx-lft[i].xx) < d)
+        k = i+1;
+        while(k < sz && (double)(vec[k].xx-vec[i].xx) < d)
         {
-            tempd = dist(p[lft[i].yy], p[rgt[k].yy]);
+            tempd = dist(p[vec[i].yy], p[vec[k].yy]);
             if(tempd-d < EPS) d = tempd;
             k++;
         }
@@ -117,4 +113,3 @@ int main()
 
     return 0;
 }
-
